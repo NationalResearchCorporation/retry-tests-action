@@ -1,7 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 
-try {
+async function run() {
   const token = core.getInput('github-token', { required: true });
   const checkSuiteName = 'CircleCI Checks';
   // Get the JSON webhook payload for the event that triggered the workflow
@@ -16,15 +16,25 @@ try {
   console.log(`The repo: ${context.repo.repo}`);
   console.log(`The check suite app name: ${checkSuite.app.name}`);
   console.log(`The check suite conclusion: ${checkSuite.conclusion}`);
+  console.log(`The check suite id: ${checkSuite.id}`);
 
   if(checkSuite.app.name == checkSuiteName && checkSuite.conclusion == 'failure') {
     console.log(`re-run the suite`);
-    octokit.checks.rerequestSuite({
+    const result = await octokit.checks.rerequestSuite({
       owner: context.repo.owner,
       repo: context.repo.repo,
       check_suite_id: checkSuite.id,
+      headers: {
+        accept: "application/vnd.github.antiope-preview+json",
+      },
     });
+    console.log('finished rerequest');
+    console.log(`result of request" ${result}`);
   }
+}
+
+try {
+  run();
 } catch (error) {
   core.setFailed(error.message);
 }
