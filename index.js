@@ -23,7 +23,7 @@ async function run() {
     const result = await octokit.checks.rerequestSuite({
       owner: context.repo.owner,
       repo: context.repo.repo,
-      check_suite_id: checkSuite.id,
+      check_suite_id: `${checkSuite.id}`,
       headers: {
         accept: "application/vnd.github.antiope-preview+json",
       },
