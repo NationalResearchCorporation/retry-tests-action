@@ -23,7 +23,7 @@ async function run() {
     await octokit.request('POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest', {
       owner: context.repo.owner,
       repo: context.repo.repo,
-      check_suite_id: checkSuite.id,
+      check_suite_id: '1041862266',
       mediaType: {
         previews: [
           'antiope'
