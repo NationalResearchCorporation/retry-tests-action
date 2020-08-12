@@ -20,14 +20,16 @@ async function run() {
 
   if(checkSuite.app.name == checkSuiteName && checkSuite.conclusion == 'failure') {
     console.log(`re-run the suite`);
-    const result = await octokit.checks.rerequestSuite({
+    await octokit.request('POST /repos/{owner}/{repo}/check-suites/{check_suite_id}/rerequest', {
       owner: context.repo.owner,
       repo: context.repo.repo,
-      check_suite_id: parseInt(checkSuite.id, 10),
-      headers: {
-        accept: "application/vnd.github.antiope-preview+json",
-      },
-    });
+      check_suite_id: checkSuite.id,
+      mediaType: {
+        previews: [
+          'antiope'
+        ]
+      }
+    })
     console.log('finished rerequest');
     console.log(`result of request" ${result}`);
   }
