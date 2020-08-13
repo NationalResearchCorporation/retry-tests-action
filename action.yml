@@ -4,6 +4,9 @@ inputs:
   github-token:
     description: 'GitHub secret token'
     required: true
+  circleci-token:
+    description: 'CircleCI API token'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
