@@ -43,11 +43,12 @@ async function run() {
             labels: [retryLabelName],
           });
 
-          const { data: check_runs } = await octokit.checks.listForSuite({
+          const result = await octokit.checks.listForSuite({
             owner: context.repo.owner,
             repo: context.repo.repo,
             check_suite_id: checkSuite.id,
           });
+          const check_runs = result.data.check_runs;
           const { "workflow-id": workflowId } = JSON.parse(check_runs[0].external_id)
 
           console.log(`Rerunning failed tests for CircleCI workflow ${workflowId}`);
